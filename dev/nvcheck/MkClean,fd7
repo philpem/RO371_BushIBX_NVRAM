@@ -12,6 +12,6 @@
 | See the License for the specific language governing permissions and
 | limitations under the License.
 |
-wipe <obey$dir>.o.* ~cfr~v
+wipe <obey$dir>.o.* ~cf~v
 remove nvcheck
 echo Finished
