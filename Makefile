@@ -18,7 +18,7 @@
 #
 # Paths
 #
-EXP_HDR = <CExport$Dir>.h
+EXP_HDR = <export$dir>
 
 #
 # Generic options:
@@ -59,23 +59,21 @@ DFLAGS   =
 # Program specific options:
 #
 COMPONENT = NVRAM
-TARGET    = aof.${COMPONENT}
-RAMTARGET = rm.${COMPONENT}
-OBJS      = header.o module.o nvram.o msgfile.o parse.o trace.o
-EXPORTS   = ${EXP_HDR}.${COMPONENT}
+TARGET    = aof.NVRAM
+OBJS      = header.o module.o NVRAM.o msgfile.o parse.o trace.o
+EXPORTS   = 
 RDIR      = ${RESDIR}.NVRAM
-
 #
 # Rule patterns
 #
 .c.o:;      ${CC} ${CFLAGS} -o $@ $<
-.cmhg.o:;   ${CMHG} -o $@ $<
+.cmhg.o:;   ${CMHG} -p -o $@ $<
 .s.o:;      ${AS} ${AFLAGS} $< $@
 
 #
 # build a relocatable module:
 #
-all: ${RAMTARGET}
+all: rm.NVRAM
 
 #
 # RISC OS ROM build rules:
@@ -92,15 +90,15 @@ install_rom: ${TARGET}
 
 clean:
 	${WIPE} o.* ${WFLAGS}
+	${WIPE} rm.* ${WFLAGS}
 	${WIPE} linked.* ${WFLAGS}
 	${WIPE} map.* ${WFLAGS}
 	${RM} ${TARGET}
-	${RM} ${RAMTARGET}
 	@echo ${COMPONENT}: cleaned
 
 resources:
 	${MKDIR} ${RDIR}
-	${CP} resources.<System>.Tags ${RDIR}.Tags ${CPFLAGS}
+	${CP} resources.<Machine>.Tags ${RDIR}.Tags ${CPFLAGS}
 	@echo ${COMPONENT}: resource files copied
 
 #
@@ -118,10 +116,10 @@ rom_link:
 	${CP} linked.${COMPONENT} ${LINKDIR}.${COMPONENT} ${CPFLAGS}
 	@echo ${COMPONENT}: rom_link complete
 
-${RAMTARGET}: ${OBJS} ${CLIB}
+rm.NVRAM: ${OBJS} ${CLIB}
 	${LD} -o $@ -module ${OBJS} ${CLIB}
 
-${EXP_HDR}.${COMPONENT}: export.h.${COMPONENT}
-	${CP} export.h.${COMPONENT} $@ ${CPFLAGS}
+${EXP_HDR}.${COMPONENT}: hdr.${COMPONENT}
+#        ${CP} hdr.${COMPONENT} $@ ${CPFLAGS}
 
 # Dynamic dependencies:
