@@ -65,7 +65,13 @@ module_finalise( int fatal, int podule, void *pw )
 _kernel_oserror *
 module_initialise( char *cmd_tail, int podule_base, void *pw )
 {
-	_kernel_oserror *err = nvram_initialise();
+	_kernel_oserror* err = NULL;
+
+#ifdef DEBUGLIB
+	trace_initialise();
+#endif
+
+	err = nvram_initialise();
 
 	/* Try to use TinyStubs if possible.
 	 */
