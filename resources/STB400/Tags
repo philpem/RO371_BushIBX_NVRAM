@@ -132,6 +132,7 @@ SPDIFOutDTS:&10F,6,2,0
 EngMenuKeys:&110,,32,0
 SPDIFOutSDDS:&114,,2,0
 DolbyAudioMode:&114,2,1,0
-CustomerN:&115,,8192
+CASystem:&200,,8192
+CustomerN:&200,,8192
 MACAddress:&C00,,48
 MACAddressChecksum:&C06,,8
