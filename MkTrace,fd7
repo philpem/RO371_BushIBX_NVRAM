@@ -13,4 +13,4 @@
 | limitations under the License.
 |
 Dir <Obey$Dir>
-amu_machine trace DFLAGS="-DDEBUG -DDEBUGLIB"
+amu_machine trace DFLAGS="-DDEBUG -DDEBUGLIB" THROWBACK=-throwback
