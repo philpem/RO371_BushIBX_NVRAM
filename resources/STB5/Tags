@@ -166,6 +166,6 @@ SPDIFOutSDDS:&114,,2,0
 DolbyAudioMode:&114,2,1,0
 MManagerSmall:&115,,16,512
 MManagerLarge:&117,,16,768
-CustomerN:&119,,8192
+CASystem:&200,,8192
 TestTaskFunctional:&FFF,0,1,0
 TestTaskConsumer:&FFF,1,1,0
