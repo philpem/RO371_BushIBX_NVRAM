@@ -75,8 +75,8 @@ RDIR      = ${RESDIR}.NVRAM
 .SUFFIXES: .o .c .s .cmhg
 
 .c.o:;      ${CC} ${CFLAGS} ${DFLAGS} -o $@ $<
-.cmhg.o:;   ${CMHG} -p -d h.header -o $@ $<
-.cmhg.h:;       ${CMHG} ${CMHGFLAGS} -d $@ $<
+.cmhg.o:;   ${CMHG} -p -o $@ $<
+.cmhg.h:;       ${CMHG} -p -d $@ $<
 .s.o:;      ${AS} ${AFLAGS} $< $@
 
 #
@@ -86,7 +86,7 @@ all: ${RAMTARGET}
 
 trace: ${TRACERAMTARGET}
 
-o.module: h.module
+o.module: h.header
 
 #
 # RISC OS ROM build rules:
@@ -106,6 +106,7 @@ clean:
 	${WIPE} linked.* ${WFLAGS}
 	${RM} ${TARGET}
 	${RM} ${RAMTARGET}
+	${RM} h.header
 	@echo ${COMPONENT}: cleaned
 
 resources:
