@@ -47,7 +47,13 @@ RSTUBS    = RISCOSLIB:o.rstubs
 ROMSTUBS  = RISCOSLIB:o.romstubs
 ROMCSTUBS = RISCOSLIB:o.romcstubs
 ABSSYM    = RISC_OSLib:o.AbsSym
-DEBUGLIB  = <Lib$Dir>.DebugLib.o.DebugLibzm TCPIPLibs:o.unixlibzm TCPIPLibs:o.inetlibzm TCPIPLibs:o.socklib5zm
+DEBUGLIB  = C:DebugLib.o.DebugLibZM
+MODMALLOCLIB = C:ModMalloc.o.Lib_M
+WILDLIB   = C:Wild.o.Wild_M
+DDTLIB    = C:DDTLib.o.DDTLib_M
+DESKLIB   = C:Desk.o.Desk_M
+DEBUGLIBS = ${DEBUGLIB} ${MODMALLOCLIB} ${WILDLIB} ${DDTLIB} ${DESKLIB}
+DLIBS     = ${DEBUGLIBS} TCPIPLibs:o.unixlibzm TCPIPLibs:o.inetlibzm TCPIPLibs:o.socklib5zm
 
 
 #
@@ -165,7 +171,7 @@ ${RAMTARGET}: ${OBJS} ${CLIB} ${DIRS}
 	${LD} -o $@ -module ${OBJS} ${CLIB}
 
 ${TRACERAMTARGET}: ${OBJS} ${CLIB} ${DIRS}
-	${LD} -o $@ -module ${OBJS} ${CLIB} ${DEBUGLIB}
+	${LD} -o $@ -module ${OBJS} ${CLIB} ${DLIBS}
 
 ${EXP_H}.${COMPONENT}: export.h.${COMPONENT}
 	${CP} export.h.${COMPONENT} $@ ${CPFLAGS}

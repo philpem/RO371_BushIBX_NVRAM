@@ -39,6 +39,9 @@
    rebooting when it's done as this would be slightly annoying */
 /* #define ALWAYS_FULL_RESET */
 
+/* Define this to prevent resetting */
+/* #define DONT_REBOOT */
+
 /* rjc/RCathera (for indeed I have many names)
    The caching code in this module is completely redundant -
    all of the read and write routines re-read the NVRAM into the cache in case
@@ -309,7 +312,7 @@ FullReset( char *pold, char *pnew, location *ploc )
                 }
 		else if ( ploc->length <= 32 )
 		{
-			TRACE( "LockedReset: setting default value for location &%03X\n" _ ploc->location );
+			TRACE( "FullReset: setting default value for location &%03X\n" _ ploc->location );
 
 			WriteValue( pnew, ploc->value, ploc->location, ploc->start_bit, ploc->length, NVRAM_FLAGS_WRITECACHE );
 		}
@@ -470,7 +473,7 @@ nvram_initialise( void )
 				RawConsistent( pbuf, pCache, 0, nvram_size );
 
 				/* If we've done a full reset then reboot the box so that it starts up in a consistent state. */
-#ifdef ALWAYS_FULL_RESET
+#if defined ALWAYS_FULL_RESET || defined DONT_REBOOT
 				TRACE("I would have RESET!!!!!!\n");
 #else
 				if ( full_reset ) _swix( OS_Reset, 0 );
