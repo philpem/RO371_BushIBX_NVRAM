@@ -164,6 +164,19 @@ CopyBuffer( char *psource, char *pdest, unsigned int location, unsigned int star
 	{
 		unsigned int mask = (1 << length) - 1;	/* Will be -1 for length >= 32. */
 		char *ptmp = pdest + location;
+		if (length >= 32)
+		{
+		 /* Cannot rely on mask being set to -1 as commented above.  If the right operand  */
+		 /* of a shift operator is negative or has a value that equals or exceeds the no.  */
+		 /* of bits used to represent the left operand, then the behaviour is undefined,   */
+		 /* (Kelley & Pohl, p. 250).  On the ARM, 'funny' values start appearing at length */
+		 /* == 256.                                                                        */
+
+		 /* XXX: the rest of the code ought to be checked for the same mistake.  Here is   */
+		 /* the correction (tested and verified).                                          */
+
+		    mask = ~0; /* FFFFFFFFu, i.e. -1 in unsigned int */
+		}
 		psource += location;
 		*ptmp = (*ptmp & ~(mask << start_bit)) | (*psource & (mask << start_bit));
 		length -= 8 - start_bit;
