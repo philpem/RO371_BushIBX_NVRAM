@@ -93,7 +93,6 @@ install_rom: ${TARGET}
 clean:
 	${WIPE} o.* ${WFLAGS}
 	${WIPE} linked.* ${WFLAGS}
-	${WIPE} map.* ${WFLAGS}
 	${RM} ${TARGET}
 	${RM} ${RAMTARGET}
 	@echo ${COMPONENT}: cleaned
@@ -113,8 +112,7 @@ ${TARGET}: ${OBJS} ${ROMCSTUBS}
 # Final link for the ROM Image (using given base address)
 #
 rom_link:
-	${LD} -o linked.${COMPONENT} -map -bin -base ${ADDRESS} ${TARGET} ${ABSSYM} > map.${COMPONENT}
-	truncate map.${COMPONENT} linked.${COMPONENT}
+	${LD} -o linked.${COMPONENT} -rmf -base ${ADDRESS} ${TARGET} ${ABSSYM}
 	${CP} linked.${COMPONENT} ${LINKDIR}.${COMPONENT} ${CPFLAGS}
 	@echo ${COMPONENT}: rom_link complete
 

@@ -28,6 +28,27 @@
 
 int _trace_on = 0;
 
+#ifdef DEBUG_TO_SCREEN
+
+void
+_tracef( char *fmt, ... )
+{
+        va_list ap;
+
+        va_start(ap, fmt);
+
+        vprintf(fmt, ap);
+
+        _swix(OS_Byte, _IN(0), 19);
+        _swix(OS_Byte, _IN(0), 19);
+        _swix(OS_Byte, _IN(0), 19);
+        _swix(OS_Byte, _IN(0), 19);
+
+        va_end(ap);
+}
+
+#else
+
 void
 _tracef( char *fmt, ... )
 {
@@ -42,5 +63,7 @@ _tracef( char *fmt, ... )
 		(void)_swix( 0x40101, 0 );
 	}
 }
+
+#endif
 
 #endif
