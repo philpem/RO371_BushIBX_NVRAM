@@ -34,7 +34,7 @@ RM      = remove
 WIPE    = -wipe
 
 AFLAGS = -depend !Depend -Stamp -quit
-CFLAGS  = -c -depend !Depend -zM -zps1 -ff ${INCLUDES}
+CFLAGS  = -c -depend !Depend -zM -zps1 -ffa ${INCLUDES} ${THROWBACK}
 CPFLAGS = ~cfr~v
 WFLAGS  = ~c~v
 
@@ -72,8 +72,11 @@ RDIR      = ${RESDIR}.NVRAM
 #
 # Rule patterns
 #
+.SUFFIXES: .o .c .s .cmhg
+
 .c.o:;      ${CC} ${CFLAGS} ${DFLAGS} -o $@ $<
-.cmhg.o:;   ${CMHG} -p -o $@ $<
+.cmhg.o:;   ${CMHG} -p -d h.header -o $@ $<
+.cmhg.h:;       ${CMHG} ${CMHGFLAGS} -d $@ $<
 .s.o:;      ${AS} ${AFLAGS} $< $@
 
 #
@@ -82,6 +85,8 @@ RDIR      = ${RESDIR}.NVRAM
 all: ${RAMTARGET}
 
 trace: ${TRACERAMTARGET}
+
+o.module: h.module
 
 #
 # RISC OS ROM build rules:

@@ -132,7 +132,7 @@ GetDefaultValue(char **ppd, int default_value, int value_size)
 			    length<=0)
 			{
 				result=default_value;
-				TRACE( "GetDefaultValue: bad NVRAM value, using default, err= %i\n" _ err );
+				TRACE( "GetDefaultValue: bad NVRAM value, using default, err= %i\n" ); //_ err );
 			}
 			else
 			{
