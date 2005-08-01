@@ -149,7 +149,7 @@ BrowserDisplayBackgrounds:&103,6,1,1
 BrowserEncoding:&104,,15,2252
 BrowserEncodingOverride:&105,7,1
 TVAspectRatio:&106,,1
-TVViewingMode:&106,1,2,2
+TVViewingMode:&106,1,2,0
 TVStandard:&106,3,5,12
 RFChannel:&107,,10,847
 SCARTConfiguration:&108,2,2,1
