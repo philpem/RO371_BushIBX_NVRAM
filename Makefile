@@ -16,6 +16,52 @@
 #
 
 #
+# Paths
+#
+EXP_H   = <CExport$Dir>.h
+EXP_HDR = <export$dir>.^.Interface2
+
+#
+# Generic options:
+#
+MKDIR   = mkdir -p
+AS      = objasm
+CC      = cc
+CMHG    = cmhg
+CP      = copy
+LD      = link
+RM      = remove
+WIPE    = -wipe
+
+AFLAGS = -depend !Depend -Stamp -quit
+CFLAGS  = -c -depend !Depend -zM -zps1 -ffa ${INCLUDES} ${THROWBACK}
+CPFLAGS = ~cfr~v
+WFLAGS  = ~c~v
+
+#
+# Libraries
+#
+CLIB      = CLIB:o.stubs
+RLIB      = RISCOSLIB:o.risc_oslib
+RSTUBS    = RISCOSLIB:o.rstubs
+ROMSTUBS  = RISCOSLIB:o.romstubs
+ROMCSTUBS = RISCOSLIB:o.romcstubs
+ABSSYM    = RISC_OSLib:o.AbsSym
+DEBUGLIB  = C:DebugLib.o.DebugLibZM
+MODMALLOCLIB = C:ModMalloc.o.Lib_M
+WILDLIB   = C:Wild.o.Wild_M
+DDTLIB    = C:DDTLib.o.DDTLib_M
+DESKLIB   = C:Desk.o.Desk_M
+DEBUGLIBS = ${DEBUGLIB} ${MODMALLOCLIB} ${WILDLIB} ${DDTLIB} ${DESKLIB}
+DLIBS     = ${DEBUGLIBS} TCPIPLibs:o.unixlibzm TCPIPLibs:o.inetlibzm TCPIPLibs:o.socklib5zm
+
+
+#
+# Include files
+#
+INCLUDES = -IC:
+
+#
 # Program specific options:
 #
 COMPONENT = NVRAM
@@ -25,22 +71,18 @@ TRACERAMTARGET = rm.${COMPONENT}db
 OBJS      = header.o module.o nvram.o msgfile.o parse.o trace.o
 EXPORTS   = ${EXP_H}.${COMPONENT} ${EXP_HDR}.${COMPONENT}
 RDIR      = ${RESDIR}.NVRAM
-DIRS      = o._dirs
+
+DIRS    = o._dirs
 
 #
-# Paths
+# Rule patterns
 #
-EXP_H   = <CExport$Dir>.h
-EXP_HDR = <export$dir>.^.Interface2
+.SUFFIXES: .o .c .s .cmhg
 
-#
-# Generic options:
-#
-CFLAGS = ${C_NO_STKCHK} ${C_MODULE}
-
-include StdTools
-include ModuleLibs
-include ModStdRule
+.c.o:;      ${CC} ${CFLAGS} ${DFLAGS} -o $@ $<
+.cmhg.o:;   ${CMHG} -p -o $@ $<
+.cmhg.h:;       ${CMHG} -p -d $@ $<
+.s.o:;      ${AS} ${AFLAGS} $< $@
 
 #
 # build a relocatable module:
@@ -49,7 +91,8 @@ all: ${RAMTARGET}
 
 trace: ${TRACERAMTARGET}
 
-module.o: header.h
+o.module: h.header
+
 
 #
 # Create local directories
@@ -90,11 +133,15 @@ install_rom: ${TARGET}
 	@echo ${COMPONENT}: rom module installed
 
 clean:
-	${XWIPE} o ${WFLAGS}
-	${XWIPE} aof ${WFLAGS}
-	${XWIPE} rm ${WFLAGS}
-	${XWIPE} linked ${WFLAGS}
+	${WIPE} o.* ${WFLAGS}
+	${WIPE} linked.* ${WFLAGS}
+	${RM} ${TARGET}
+	${RM} ${RAMTARGET}
 	${RM} h.header
+	${RM} o
+	${RM} rm
+	${RM} aof
+	${RM} linked
 	@echo ${COMPONENT}: cleaned
 
 resources:
@@ -124,7 +171,7 @@ ${RAMTARGET}: ${OBJS} ${CLIB} ${DIRS}
 	${LD} -o $@ -module ${OBJS} ${CLIB}
 
 ${TRACERAMTARGET}: ${OBJS} ${CLIB} ${DIRS}
-	${LD} -o $@ -module ${OBJS} ${CLIB} ${DEBUGLIBS}
+	${LD} -o $@ -module ${OBJS} ${CLIB} ${DLIBS}
 
 ${EXP_H}.${COMPONENT}: export.h.${COMPONENT}
 	${CP} export.h.${COMPONENT} $@ ${CPFLAGS}

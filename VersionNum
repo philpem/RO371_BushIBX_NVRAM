@@ -1,7 +1,7 @@
 /* (0.68)
  *
  * This file is automatically maintained by srccommit, do not edit manually.
- * Last processed by srccommit version: 1.1.
+ * Last processed by srccommit version: 1.2.
  *
  */
 #define Module_MajorVersion_CMHG        0.68
@@ -16,7 +16,7 @@
 #define Module_ApplicationDate          "14-Jan-12"
 
 #define Module_ComponentName            "NVRAM"
-#define Module_ComponentPath            "castle/RiscOS/Sources/HWSupport/NVRAM"
+#define Module_ComponentPath            "RiscOS/Sources/HWSupport/NVRAM"
 
 #define Module_FullVersion              "0.68"
 #define Module_HelpVersion              "0.68 (14 Jan 2012)"
