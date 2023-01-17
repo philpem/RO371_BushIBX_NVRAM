@@ -24,10 +24,10 @@ EXP_HDR = <export$dir>.^.Interface2
 #
 # Generic options:
 #
-MKDIR   = mkdir -p
+MKDIR   = cdir
 AS      = objasm
 CC      = cc
-CMHG    = cmhg
+CMHG    = cmhg546
 CP      = copy
 LD      = link
 RM      = remove
@@ -80,8 +80,8 @@ DIRS    = o._dirs
 .SUFFIXES: .o .c .s .cmhg
 
 .c.o:;      ${CC} ${CFLAGS} ${DFLAGS} -o $@ $<
-.cmhg.o:;   ${CMHG} -p -o $@ $<
-.cmhg.h:;       ${CMHG} -p -d $@ $<
+.cmhg.o:;   ${CMHG} -p -26bit -o $@ $<
+.cmhg.h:;       ${CMHG} -p -26bit -d $@ $<
 .s.o:;      ${AS} ${AFLAGS} $< $@
 
 #
@@ -122,9 +122,9 @@ install_ram: ${RAMTARGET}
 	${ATTR} -files +or +ow +wr -ww ${INSTDIR}.${COMPONENT}
 	@echo ${COMPONENT}: ram module installed
 
-install_tags: Resources.${SYSTEM}.Tags
+install_tags: Resources.<System>.Tags
 	${MKDIR} ${INSTDIR}
-	${CP} Resources.${SYSTEM}.Tags ${INSTDIR}.Tags ${CPFLAGS}
+	${CP} Resources.<System>.Tags ${INSTDIR}.Tags ${CPFLAGS}
 	${ATTR} -files +or +ow +wr -ww ${INSTDIR}.Tags
 	@echo ${COMPONENT}: tags file installed
 
